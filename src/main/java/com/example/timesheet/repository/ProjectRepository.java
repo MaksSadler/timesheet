@@ -20,22 +20,22 @@ public class ProjectRepository {
 
     public Optional<Project> findById(Long id) {
         return projects.stream()
-                .filter(project -> Objects.equals(project.getId(), id))
+                .filter(project -> Objects.equals(project.getProjectId(), id))
                 .findFirst();
     }
 
     public Project save(Project project) {
-        if (project.getId() == null) {
-            project.setId(sequence++);
-            project.setName(name);
+        if (project.getProjectId() == null) {
+            project.setProjectId(sequence++);
+            project.setProjectName(name);
         } else {
-            deleteById(project.getId());
+            deleteById(project.getProjectId());
         }
         projects.add(project);
         return project;
     }
 
     public void deleteById(Long id) {
-        projects.removeIf(project -> Objects.equals(project.getId(), id));
+        projects.removeIf(project -> Objects.equals(project.getProjectId(), id));
     }
 }

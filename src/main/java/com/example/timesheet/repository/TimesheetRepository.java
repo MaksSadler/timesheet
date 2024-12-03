@@ -2,10 +2,13 @@ package com.example.timesheet.repository;
 
 import com.example.timesheet.model.Timesheet;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Repository // @Component для классов работающих с данными.
 public class TimesheetRepository {
@@ -41,8 +44,20 @@ public class TimesheetRepository {
     }
 
     //@GetMapping("/timesheets") //получить все
-    public List<Timesheet> getAll() {
-        return List.copyOf(timesheets);
+    public List<Timesheet> getAll(LocalDate createBefore, LocalDate createAfter) {
+        Predicate<Timesheet> filter = it -> true;
+
+        if (Objects.nonNull(createBefore)) {
+            filter = filter.and(it -> it.getCreatedAt().isBefore(createBefore));
+        }
+
+        if (Objects.nonNull(createAfter)) {
+            filter = filter.and(it -> it.getCreatedAt().isAfter(createAfter));
+        }
+
+        return timesheets.stream()
+                .filter(filter)
+                .toList();
     }
 
     //@PostMapping("/timesheets") //создание нового ресурса

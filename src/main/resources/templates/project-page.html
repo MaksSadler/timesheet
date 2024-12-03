@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home / Project Page</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(238, 238, 238, 0.25);
+        }
+    </style>
+</head>
+<body>
+<h1>Проект #<span th:text="${project.getProjectName()}"></span></h1>
+
+<table>
+    <tr>
+        <th>ID проекта:</th>
+        <td><span th:text="${project.getProjectId()}"></span></td>
+    </tr>
+    <tr>
+        <th>Проект:</th>
+        <td> <span th:text="${project.getProjectName()}"></span></td>
+    </tr>
+</table>
+</body>
+</html>

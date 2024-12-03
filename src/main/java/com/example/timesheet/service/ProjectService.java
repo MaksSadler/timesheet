@@ -35,7 +35,7 @@ public class ProjectService {
         Optional<Project> projectOptional = projectRepository.findById(id);
         if (projectOptional.isPresent()) {
             Project project = projectOptional.get();
-            project.setName(projectDetails.getName());
+            project.setProjectName(projectDetails.getProjectName());
             return projectRepository.save(project);
         } else {
             return null;
