@@ -29,7 +29,7 @@ public class EmployeeService {
     }
 
     public Optional<Employee> findByName(String name) {
-        return Optional.ofNullable(employeeRepository.findByEmployeeName(name)
+        return Optional.ofNullable(employeeRepository.findByEmployeeFirstName(name)
         .orElseThrow(() -> new NoSuchElementException("Project with name " + name + " does not exist")));
     }
 
@@ -38,7 +38,7 @@ public class EmployeeService {
     }
 
     public Employee save(Employee employee) {
-        if(employeeRepository.findByEmployeeName(employee.getEmployeeFirstName()).isPresent()) {
+        if(employeeRepository.findByEmployeeFirstName(employee.getEmployeeFirstName()).isPresent()) {
             throw new IllegalArgumentException
                     ("Project with name " + employee.getEmployeeFirstName() + " already exists");
         }

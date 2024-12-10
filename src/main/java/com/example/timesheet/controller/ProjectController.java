@@ -6,9 +6,7 @@ import com.example.timesheet.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/projects")
@@ -61,7 +59,7 @@ public class ProjectController {
 
     @GetMapping("/{id}/timesheets")
     public ResponseEntity<List<Timesheet>> getTimesheets(@PathVariable long id) {
-        List<Timesheet> timesheet = projectService.getTimesheets(id);
+        List<Timesheet> timesheet = projectService.findProjectTimesheets(id);
         if (timesheet != null) {
             return ResponseEntity.ok(timesheet);
         } else {

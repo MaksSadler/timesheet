@@ -1,7 +1,9 @@
 package com.example.timesheet.service;
 
+import com.example.timesheet.model.Employee;
 import com.example.timesheet.model.Project;
 import com.example.timesheet.model.Timesheet;
+import com.example.timesheet.repository.EmployeeRepository;
 import com.example.timesheet.repository.ProjectRepository;
 import com.example.timesheet.repository.TimesheetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,21 @@ import java.util.Optional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
     private final TimesheetRepository timesheetRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, TimesheetRepository timesheetRepository) {
+    public ProjectService(ProjectRepository projectRepository,
+                          EmployeeRepository employeeRepository,
+                          TimesheetRepository timesheetRepository) {
         this.projectRepository = projectRepository;
+        this.employeeRepository = employeeRepository;
         this.timesheetRepository = timesheetRepository;
+    }
+
+    private void findProjectOrThrow(Long projectId) {
+        projectRepository.findById(projectId)
+                .orElseThrow(() -> new NoSuchElementException("Project with id " + projectId + " does not exist"));
     }
 
     public List<Project> getAllProjects() {
@@ -47,14 +58,20 @@ public class ProjectService {
     }
 
     public void deleteProject(Long id) {
+        findProjectOrThrow(id);
         projectRepository.deleteById(id);
     }
 
-    public List<Timesheet> getTimesheets(Long id) {
+    public List<Employee> findProjectEmployees(Long id) {
+        findProjectOrThrow(id);
+        return projectRepository.findProjectEmployees(id);
+    }
+
+    public List<Timesheet> findProjectTimesheets(Long id) {
         if(projectRepository.findById(id).isEmpty()) {
             throw new NoSuchElementException("Project with id " + id + " does not exist");
         }
-        return timesheetRepository.findByProjectId(id);
+        return timesheetRepository.findAllByTimesheetProjectId(id);
     }
 
 }
