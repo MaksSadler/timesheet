@@ -7,7 +7,6 @@ import com.example.timesheet.repository.TimesheetRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,7 +20,6 @@ public class TimesheetApplication {
 
 		for (int i = 1; i <= 5; i++) {
 			Project project = new Project();
-			project.setProjectId((long) i);
 			project.setProjectName("Project #" + i);
 			projectRepo.save(project);
 		}
@@ -30,12 +28,11 @@ public class TimesheetApplication {
 		for (int i = 1; i <= 10; i++) {
 			createdAt = createdAt.plusDays(1);
 			Timesheet timesheet = new Timesheet();
-			timesheet.setId((long) i);
-			timesheet.setProjectId(ThreadLocalRandom.current().nextLong(1,6));
+			timesheet.setTimesheetProjectId(ThreadLocalRandom.current().nextLong(1,6));
 			timesheet.setCreatedAt(createdAt);
 			timesheet.setMinutes(ThreadLocalRandom.current().nextInt(100, 1000));
 
-			timesheetRepo.create(timesheet);
+			timesheetRepo.save(timesheet);
 		}
 	}
 

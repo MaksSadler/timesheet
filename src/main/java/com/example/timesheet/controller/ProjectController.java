@@ -1,12 +1,14 @@
 package com.example.timesheet.controller;
 
 import com.example.timesheet.model.Project;
+import com.example.timesheet.model.Timesheet;
 import com.example.timesheet.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/projects")
@@ -55,5 +57,15 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable long id) {
         projectService.deleteProject(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/timesheets")
+    public ResponseEntity<List<Timesheet>> getTimesheets(@PathVariable long id) {
+        List<Timesheet> timesheet = projectService.getTimesheets(id);
+        if (timesheet != null) {
+            return ResponseEntity.ok(timesheet);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

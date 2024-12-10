@@ -1,21 +1,25 @@
 package com.example.timesheet.service;
 
 import com.example.timesheet.model.Project;
+import com.example.timesheet.model.Timesheet;
 import com.example.timesheet.repository.ProjectRepository;
+import com.example.timesheet.repository.TimesheetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TimesheetRepository timesheetRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, TimesheetRepository timesheetRepository) {
         this.projectRepository = projectRepository;
+        this.timesheetRepository = timesheetRepository;
     }
 
     public List<Project> getAllProjects() {
@@ -45,4 +49,12 @@ public class ProjectService {
     public void deleteProject(Long id) {
         projectRepository.deleteById(id);
     }
+
+    public List<Timesheet> getTimesheets(Long id) {
+        if(projectRepository.findById(id).isEmpty()) {
+            throw new NoSuchElementException("Project with id " + id + " does not exist");
+        }
+        return timesheetRepository.findByProjectId(id);
+    }
+
 }

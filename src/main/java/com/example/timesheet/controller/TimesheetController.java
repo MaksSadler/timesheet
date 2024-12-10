@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +33,7 @@ public class TimesheetController {
     public ResponseEntity<List<Timesheet>> getAll(
             @RequestParam(required = false) LocalDate createdAtBefore,
             @RequestParam(required = false) LocalDate createdAtAfter) {
-        return ResponseEntity.ok(service.getAll(createdAtBefore, createdAtAfter));
+        return ResponseEntity.ok(service.findAll(createdAtBefore, createdAtAfter));
     }
 
     @PostMapping //создание нового ресурса

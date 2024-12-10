@@ -4,7 +4,6 @@ import com.example.timesheet.model.Timesheet;
 import com.example.timesheet.repository.ProjectRepository;
 import com.example.timesheet.repository.TimesheetRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,31 +23,31 @@ public class TimesheetService {
     }
 
     public Optional<Timesheet> findById(Long id) {
-        return repository.getById(id);
+        return repository.findById(id);
     }
 
-    public List<Timesheet> getAll() {
-        return getAll(null,null);
+    public List<Timesheet> findAll() {
+        return findAll(null,null);
     }
 
-    public List<Timesheet> getAll(LocalDate createBefore, LocalDate createAfter) {
-        return repository.getAll(createBefore,createAfter);
+    public List<Timesheet> findAll(LocalDate createBefore, LocalDate createAfter) {
+        return repository.findAll();
     }
 
     public Timesheet create(Timesheet timesheet) {
-        if (Objects.isNull(timesheet.getProjectId())) {
+        if (Objects.isNull(timesheet.getTimesheetProjectId())) {
             throw new IllegalArgumentException("Project must not be null");
         }
 
-        if(projectRepository.findById(timesheet.getProjectId()).isEmpty()) {
-            throw new NoSuchElementException("Project with id " + timesheet.getId() + " does not exist");
+        if(projectRepository.findById(timesheet.getTimesheetProjectId()).isEmpty()) {
+            throw new NoSuchElementException("Project with id " + timesheet.getTimesheetId() + " does not exist");
         }
 
         timesheet.setCreatedAt(LocalDate.now());
-        return repository.create(timesheet);
+        return repository.save(timesheet);
     }
 
     public void delete(Long id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 }

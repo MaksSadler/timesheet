@@ -1,82 +1,35 @@
 package com.example.timesheet.repository;
 
 import com.example.timesheet.model.Timesheet;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
 
-@Repository // @Component для классов работающих с данными.
-public class TimesheetRepository {
+public interface TimesheetRepository extends JpaRepository<Timesheet, Long> {
 
-    private static Long sequence = 1L;
-    private final List<Timesheet> timesheets = new ArrayList<>();
+    // select * from timesheet where project_id = $1
+    //List<Timesheet> findByProjectId(Long projectId);
 
-    //GET - получить (не содержит тела)
-    //POST - создать
-    //PUT - изменить (изменяет все)
-    //PATCH - изменить (изменяет только конкретное объявленное поле)
-    //DELETE - удалить
+    // select * from timesheets where project_id = $1 and minutes = $2
+    List<Timesheet> findByProjectIdAndMinutes (Long projectId, Integer minutes);
 
-//    @GetMapping("/timesheets")
-//    public Timesheet get() {
-//        Timesheet timesheet = new Timesheet();
-//        timesheet.setId(1L);
-//        timesheet.setProject("spring");
-//        timesheet.setMinutes(200);
-//        timesheet.setCreatedAt(LocalDate.now());
-//        return timesheet;
-//    }
+    // select * from timesheets where created_at > $1
+    List<Timesheet> findByCreatedAtGreaterThan(LocalDate createdAt);
 
-    //@GetMapping("/timesheets/{id}") получить конкретную запись по идентификатору
-    //@DeleteMapping("/timesheets/{id}") удалить конкретную запись по идентификатору
-    //@PutMapping("/timesheets/{id}") обновить конкретную запись по идентификатору
+    // select * from timesheets where created_at > $1 and < $2
+    List<Timesheet> findByCreatedAtBetween(LocalDate min, LocalDate max);
 
-    //@GetMapping("/timesheets/{id}") //получить по идентификатору
-    public Optional<Timesheet> getById(Long id) {
-        return timesheets.stream()
-                .filter(it -> Objects.equals(it.getId(), id))
-                .findFirst();
-    }
+    // select * from timesheets where project_id is null
+    List<Timesheet> findByProjectIdIsNull();
 
-    //@GetMapping("/timesheets") //получить все
-    public List<Timesheet> getAll(LocalDate createBefore, LocalDate createAfter) {
-        Predicate<Timesheet> filter = it -> true;
+    //jql - java query language
+    @Query("select t from Timesheet t where t.timesheetProjectId = :projectId order by t.createdAt desc")
+    List<Timesheet> findByProjectId(Long projectId);
 
-        if (Objects.nonNull(createBefore)) {
-            filter = filter.and(it -> it.getCreatedAt().isBefore(createBefore));
-        }
+    List<Timesheet> findAllByTimesheetEmployeeId(Long employeeId);
 
-        if (Objects.nonNull(createAfter)) {
-            filter = filter.and(it -> it.getCreatedAt().isAfter(createAfter));
-        }
+    List<Timesheet> findAllByTimesheetProjectId(Long employeeId);
 
-        return timesheets.stream()
-                .filter(filter)
-                .toList();
-    }
-
-    //@PostMapping("/timesheets") //создание нового ресурса
-    public Timesheet create(Timesheet timesheet) {
-        timesheet.setId(sequence++);
-        timesheet.setProjectId(timesheet.getProjectId());
-        timesheets.add(timesheet);
-
-        //Location: /timesheets/sequence
-        //201 status Created
-        return timesheet;
-    }
-
-    //@DeleteMapping("/timesheets/{id}")
-    public void delete(Long id) {
-        timesheets.stream()
-                .filter(it -> Objects.equals(it.getId(), id))
-                .findFirst()
-                .ifPresent(timesheets::remove); //если нет - иногда посылают 404 Not Found
-        //204 No content
-    }
 }
