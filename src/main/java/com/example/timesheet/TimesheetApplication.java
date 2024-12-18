@@ -4,6 +4,7 @@ import com.example.timesheet.model.Project;
 import com.example.timesheet.model.Timesheet;
 import com.example.timesheet.repository.ProjectRepository;
 import com.example.timesheet.repository.TimesheetRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
+@OpenAPIDefinition
 public class TimesheetApplication {
 
 	public static void main(String[] args) {
