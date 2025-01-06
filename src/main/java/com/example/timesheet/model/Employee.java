@@ -17,6 +17,7 @@ public class Employee {
 
     @Column(name = "employee_firstName")
     private String employeeFirstName;
+
     @Column(name = "employee_lastName")
     private String employeeLastName;
 

@@ -38,7 +38,7 @@ public class TimesheetPageController {
         return "timesheet-page.html";
     }
 
-    @GetMapping("project/{projectId}")
+    @GetMapping("/project/{projectId}")
     public String getProjectPage(@PathVariable Long projectId, Model model) {
         Optional<TimesheetPageDto> projectOpt = timesheetPageService.findById(projectId);
         if (projectOpt.isEmpty()) {
