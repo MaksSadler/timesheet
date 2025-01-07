@@ -12,12 +12,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
-@Tag(name = "Projects", description = "API для работы с проектами")
+@Tag(name = "Project Controller", description = "API для работы с проектами")
 public class ProjectController {
 
     private final ProjectService projectService;

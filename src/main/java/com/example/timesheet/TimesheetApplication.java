@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -32,11 +31,11 @@ public class TimesheetApplication {
 		UserRepository userRepo = ctx.getBean(UserRepository.class);
 		User admin = new User();
 		admin.setLogin("admin");
-		admin.setPassword("admin");
+		admin.setPassword("$2a$12$pODQnAlPxWieuZzrc.u95e5onaj6cOEtc2uVzbGEZ5S/tP.O26z86");
 
 		User user = new User();
 		user.setLogin("user");
-		user.setPassword("$2a$12$7I3/oZdYZty5wKxneZanzeFJDPMlIn4JFPHqJCM4LZmFY6DWir2ky");
+		user.setPassword("user");
 
 		User rest = new User();
 		rest.setLogin("rest");
@@ -48,18 +47,18 @@ public class TimesheetApplication {
 		UserRoleRepository userRoleRepository = ctx.getBean(UserRoleRepository.class);
 		UserRole adminAdminRole = new UserRole();
 		adminAdminRole.setUserId(admin.getId());
-		//adminAdminRole.setRoleName(Role.ADMIN.getName());
+		//adminAdminRole.setRoleId(Long.valueOf(admin.getLogin()));
 		userRoleRepository.save(adminAdminRole);
 
 		UserRole adminUserRole = new UserRole();
-		adminUserRole.setUserId(admin.getId());
+		adminUserRole.setUserId(user.getId());
 		//adminUserRole.setRoleName(Role.USER.getName());
 		userRoleRepository.save(adminUserRole);
 
-		UserRole userUserRole = new UserRole();
-		userUserRole.setUserId(user.getId());
+		UserRole userRestRole = new UserRole();
+		userRestRole.setUserId(rest.getId());
 		//userUserRole.setRoleName(Role.USER.getName());
-		userRoleRepository.save(userUserRole);
+		userRoleRepository.save(userRestRole);
 
 		for (int i = 1; i <= 5; i++) {
 			Project project = new Project();

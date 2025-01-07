@@ -29,9 +29,7 @@ public class TimesheetPageController {
     public String getTimesheetPage(@PathVariable Long id, Model model) {
         Optional<TimesheetPageDto> timesheetOpt = timesheetPageService.findById(id);
         if (timesheetOpt.isEmpty()) {
-            return "/not-found.html";
-            //FIXME return not-found.html
-           // throw new NoSuchElementException();
+            throw new NoSuchElementException();
         }
 
         model.addAttribute("timesheet", timesheetOpt.get());

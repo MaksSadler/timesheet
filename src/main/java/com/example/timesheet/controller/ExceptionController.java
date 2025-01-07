@@ -15,7 +15,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<?> handleNoSuchElementException(NoSuchElementException e) {
+    public ResponseEntity<?> handleNoSuchElementException() {
         return ResponseEntity.notFound().build();
     }
 

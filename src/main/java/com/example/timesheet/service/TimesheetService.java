@@ -1,5 +1,6 @@
 package com.example.timesheet.service;
 
+import com.example.timesheet.aspect.Timer;
 import com.example.timesheet.model.Timesheet;
 import com.example.timesheet.repository.ProjectRepository;
 import com.example.timesheet.repository.TimesheetRepository;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Service // то же самое что и component, просто специально называется service,
 //чтобы различать сервисный слой
+@Timer
 public class TimesheetService {
 
     private final TimesheetRepository repository;
@@ -22,7 +24,9 @@ public class TimesheetService {
         this.projectRepository = projectRepository;
     }
 
+//    @Timer
     public Optional<Timesheet> findById(Long id) {
+        System.out.println("LOG INSIDE METHOD");
         return repository.findById(id);
     }
 
@@ -47,6 +51,7 @@ public class TimesheetService {
         return repository.save(timesheet);
     }
 
+//    @Timer(enabled = false)
     public void delete(Long id) {
         repository.deleteById(id);
     }
